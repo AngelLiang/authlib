@@ -65,9 +65,12 @@ class BearerTokenValidator(object):
         return expires_at < time.time()
 
     def scope_insufficient(self, token, scope, operator='AND'):
+        """范围不足？"""
         if not scope:
             return False
+        # 获取 token 的 scope
         token_scopes = set(scope_to_list(token.get_scope()))
+        # 获取资源的 scope
         resource_scopes = set(scope_to_list(scope))
         if operator == 'AND':
             return not token_scopes.issuperset(resource_scopes)
@@ -79,12 +82,16 @@ class BearerTokenValidator(object):
 
     def __call__(self, token_string, scope, request, scope_operator='AND'):
         token = self.authenticate_token(token_string)
+        # 是否有Token
         if not token:
             raise InvalidTokenError(realm=self.realm)
+        # 请求是否有效
         if self.request_invalid(request):
             raise InvalidRequestError()
+        # token是否过期
         if self.token_expired(token):
             raise InvalidTokenError(realm=self.realm)
+        # token是否被取消
         if self.token_revoked(token):
             raise InvalidTokenError(realm=self.realm)
         if self.scope_insufficient(token, scope, scope_operator):

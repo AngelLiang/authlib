@@ -19,6 +19,7 @@ class ResourceProtector(object):
             cls.TOKEN_VALIDATORS[validator.TOKEN_TYPE] = validator
 
     def validate_request(self, scope, request, scope_operator='AND'):
+        """验证请求"""
         auth = request.headers.get('Authorization')
         if not auth:
             raise MissingAuthorizationError()

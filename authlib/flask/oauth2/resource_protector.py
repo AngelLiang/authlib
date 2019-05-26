@@ -76,6 +76,7 @@ class ResourceProtector(_ResourceProtector):
         )
         if not callable(operator):
             operator = operator.upper()
+        # 验证请求
         token = self.validate_request(scope, request, operator)
         token_authenticated.send(self, token=token)
         ctx = _app_ctx_stack.top
