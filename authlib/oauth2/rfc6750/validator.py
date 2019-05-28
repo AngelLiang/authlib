@@ -65,7 +65,12 @@ class BearerTokenValidator(object):
         return expires_at < time.time()
 
     def scope_insufficient(self, token, scope, operator='AND'):
-        """范围不足？"""
+        """判断作用域范围是否不足，如果范围不足则返回True
+
+        :param token:
+        :param scope:
+        :param operator: str or callable, AND or OR
+        """
         if not scope:
             return False
         # 获取 token 的 scope
@@ -73,6 +78,7 @@ class BearerTokenValidator(object):
         # 获取资源的 scope
         resource_scopes = set(scope_to_list(scope))
         if operator == 'AND':
+            # set().issuperset(): 判断是否是父集
             return not token_scopes.issuperset(resource_scopes)
         if operator == 'OR':
             return not token_scopes & resource_scopes
@@ -81,6 +87,10 @@ class BearerTokenValidator(object):
         raise ValueError('Invalid operator value')
 
     def __call__(self, token_string, scope, request, scope_operator='AND'):
+        """
+        :param operator: str, AND or OR
+        """
+        # 获取token
         token = self.authenticate_token(token_string)
         # 是否有Token
         if not token:
@@ -94,6 +104,7 @@ class BearerTokenValidator(object):
         # token是否被取消
         if self.token_revoked(token):
             raise InvalidTokenError(realm=self.realm)
+        # 是否范围不足
         if self.scope_insufficient(token, scope, scope_operator):
-            raise InsufficientScopeError()
+            raise InsufficientScopeError()  # 抛出异常
         return token
