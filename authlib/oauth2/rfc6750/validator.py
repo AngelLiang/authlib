@@ -61,6 +61,7 @@ class BearerTokenValidator(object):
         raise NotImplementedError()
 
     def token_expired(self, token):
+        """Token是否过期"""
         expires_at = token.get_expires_at()
         return expires_at < time.time()
 

@@ -13,6 +13,7 @@ from authlib.oidc.core import (
 
 
 class OAuth2ClientMixin(ClientMixin):
+    """数据模型混合类"""
     client_id = Column(String(48), index=True)
     client_secret = Column(String(120))
     issued_at = Column(
@@ -171,11 +172,12 @@ class OAuth2ClientMixin(ClientMixin):
 
 
 class OAuth2AuthorizationCodeMixin(AuthorizationCodeMixin):
+    """数据模型混合类"""
     code = Column(String(120), unique=True, nullable=False)
     client_id = Column(String(48))
     redirect_uri = Column(Text, default='')
     response_type = Column(Text, default='')
-    scope = Column(Text, default='')
+    scope = Column(Text, default='')  # 作用域
     auth_time = Column(
         Integer, nullable=False,
         default=lambda: int(time.time())
@@ -206,8 +208,8 @@ class OAuth2TokenMixin(TokenMixin):
     token_type = Column(String(40))
     access_token = Column(String(255), unique=True, nullable=False)
     refresh_token = Column(String(255), index=True)
-    scope = Column(Text, default='')
-    revoked = Column(Boolean, default=False)
+    scope = Column(Text, default='')  # 作用域
+    revoked = Column(Boolean, default=False)  # 撤销
     issued_at = Column(
         Integer, nullable=False, default=lambda: int(time.time())
     )

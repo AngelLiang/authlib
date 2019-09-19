@@ -25,7 +25,7 @@ class ResourceProtector(object):
             raise MissingAuthorizationError()
 
         # https://tools.ietf.org/html/rfc6749#section-7.1
-        token_parts = auth.split(None, 1)
+        token_parts = auth.split(None, 1)  # Bearer xxx
         if len(token_parts) != 2:
             raise UnsupportedTokenTypeError()
 

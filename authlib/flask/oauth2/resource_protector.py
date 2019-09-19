@@ -75,7 +75,7 @@ class ResourceProtector(_ResourceProtector):
             _req.headers
         )
         if not callable(operator):
-            operator = operator.upper()
+            operator = operator.upper()  # 大写
         # 验证请求
         token = self.validate_request(scope, request, operator)
         token_authenticated.send(self, token=token)
