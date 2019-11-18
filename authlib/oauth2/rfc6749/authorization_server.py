@@ -132,8 +132,10 @@ class AuthorizationServer(object):
         :param grant_cls: a grant class.
         :param extensions: extensions for the grant class.
         """
+        # 注册 authorization grant
         if hasattr(grant_cls, 'check_authorization_endpoint'):
             self._authorization_grants.append((grant_cls, extensions))
+        # 注册 token grant
         if hasattr(grant_cls, 'check_token_endpoint'):
             self._token_grants.append((grant_cls, extensions))
 
@@ -169,6 +171,8 @@ class AuthorizationServer(object):
 
         :param request: OAuth2Request instance.
         :return: grant instance
+
+        对当前 request 寻找 token grant
         """
         for (grant_cls, extensions) in self._token_grants:
             if grant_cls.check_token_endpoint(request) and \

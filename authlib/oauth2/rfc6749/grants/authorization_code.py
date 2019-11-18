@@ -360,12 +360,14 @@ class AuthorizationCodeGrant(BaseGrant, AuthorizationEndpointMixin, TokenEndpoin
 
 
 def validate_code_authorization_request(grant):
+    """辅助函数"""
     client_id = grant.request.client_id
     log.debug('Validate authorization request of %r', client_id)
 
     if client_id is None:
         raise InvalidClientError(state=grant.request.state)
 
+    # 使用注册的 query_client 查找 client
     client = grant.server.query_client(client_id)
     if not client:
         raise InvalidClientError(state=grant.request.state)

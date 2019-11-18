@@ -121,6 +121,10 @@ class AuthorizationEndpointMixin(object):
 
     @staticmethod
     def validate_authorization_redirect_uri(request, client):
+        """
+        :param request:
+        :param client:
+        """
         if request.redirect_uri:
             if not client.check_redirect_uri(request.redirect_uri):
                 raise InvalidRequestError(

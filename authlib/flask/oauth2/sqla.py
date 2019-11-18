@@ -155,12 +155,17 @@ class OAuth2ClientMixin(ClientMixin):
         return list_to_scope([s for s in scopes if s in allowed])
 
     def check_redirect_uri(self, redirect_uri):
+        """检查重定向的链接
+
+        会被框架调用
+        """
         return redirect_uri in self.redirect_uris
 
     def has_client_secret(self):
         return bool(self.client_secret)
 
     def check_client_secret(self, client_secret):
+        """检查客户端密钥"""
         return self.client_secret == client_secret
 
     def check_token_endpoint_auth_method(self, method):
