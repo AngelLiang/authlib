@@ -62,6 +62,7 @@ class BaseGrant(object):
         client = self.server.authenticate_client(
             self.request,
             self.TOKEN_ENDPOINT_AUTH_METHODS)
+        # 发送信号
         self.server.send_signal(
             'after_authenticate_client',
             client=client, grant=self)
@@ -107,11 +108,15 @@ class TokenEndpointMixin(object):
 
 
 class AuthorizationEndpointMixin(object):
-    RESPONSE_TYPES = set()
+    RESPONSE_TYPES = set()  # 一般是 code 或 token
     ERROR_RESPONSE_FRAGMENT = False
 
     @classmethod
     def check_authorization_endpoint(cls, request):
+        """检查认证端点
+
+        :param request: authlib.oauth2.OAuth2Request
+        """
         return request.response_type in cls.RESPONSE_TYPES
 
     @staticmethod

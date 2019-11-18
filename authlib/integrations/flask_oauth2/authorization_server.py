@@ -147,6 +147,8 @@ class AuthorizationServer(_AuthorizationServer):
         :class:`authlib.oauth2.rfc6750.BearerToken`. By default, it will not
         generate ``refresh_token``, which can be turn on by configuration
         ``OAUTH2_REFRESH_TOKEN_GENERATOR=True``.
+
+        创建 bearer_token 生成器
         """
         conf = config.get('OAUTH2_ACCESS_TOKEN_GENERATOR', True)
         access_token_generator = create_token_generator(conf, 42)

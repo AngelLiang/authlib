@@ -3,9 +3,14 @@ from authlib.common.encoding import to_unicode
 
 
 def create_oauth_request(request, request_cls, use_json=False):
+    """
+    :param request:
+    :param request_cls: authlib.oauth2.OAuth2Request
+    """
     if isinstance(request, request_cls):
         return request
 
+    # 默认参数
     if not request:
         request = flask_req
 
@@ -22,4 +27,5 @@ def create_oauth_request(request, request_cls, use_json=False):
     url = request.base_url
     if request.query_string:
         url = url + '?' + to_unicode(request.query_string)
+    # 生成 request_cls 对象
     return request_cls(request.method, url, body, request.headers)

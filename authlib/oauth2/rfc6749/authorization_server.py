@@ -78,6 +78,9 @@ class AuthorizationServer(object):
         """
         pass
 
+    ################################################################
+    # create request
+
     def create_oauth2_request(self, request):
         """This method MUST be implemented in framework integrations. It is
         used to create an OAuth2Request instance.
@@ -96,6 +99,8 @@ class AuthorizationServer(object):
         """
         raise NotImplementedError()
 
+    ################################################################
+
     def handle_response(self, status, body, headers):
         """Return HTTP response. Framework MUST implement this function."""
         raise NotImplementedError()
@@ -109,6 +114,9 @@ class AuthorizationServer(object):
             scopes = set(scope_to_list(scope))
             if scopes_supported and not set(scopes_supported).issuperset(scopes):
                 raise InvalidScopeError(state=state)
+
+    ################################################################
+    # register
 
     def register_grant(self, grant_cls, extensions=None):
         """Register a grant class into the endpoint registry. Developers
@@ -139,11 +147,17 @@ class AuthorizationServer(object):
         """
         self._endpoints[endpoint_cls.ENDPOINT_NAME] = endpoint_cls(self)
 
+    ################################################################
+    # get grant
+
     def get_authorization_grant(self, request):
         """Find the authorization grant for current request.
 
         :param request: OAuth2Request instance.
         :return: grant instance
+
+        对当前 request 寻找 authorization grant
+        只有注册了 grant 才能找到
         """
         for (grant_cls, extensions) in self._authorization_grants:
             if grant_cls.check_authorization_endpoint(request):
@@ -161,6 +175,9 @@ class AuthorizationServer(object):
                     request.method in grant_cls.TOKEN_ENDPOINT_HTTP_METHODS:
                 return _create_grant(grant_cls, extensions, request, self)
         raise InvalidGrantError()
+
+    ################################################################
+    # create response
 
     def create_endpoint_response(self, name, request=None):
         """Validate endpoint request and create endpoint response.
@@ -217,6 +234,8 @@ class AuthorizationServer(object):
             return self.handle_response(*args)
         except OAuth2Error as error:
             return self.handle_error_response(request, error)
+
+    ################################################################
 
     def handle_error_response(self, request, error):
         return self.handle_response(*error(

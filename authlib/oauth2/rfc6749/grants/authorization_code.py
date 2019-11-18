@@ -156,8 +156,8 @@ class AuthorizationCodeGrant(BaseGrant, AuthorizationEndpointMixin, TokenEndpoin
                 code = self.create_authorization_code(
                     self.request.client, grant_user, self.request)
             else:
-                code = self.generate_authorization_code()
-                self.save_authorization_code(code, self.request)
+                code = self.generate_authorization_code()  # 生成授权码
+                self.save_authorization_code(code, self.request)  # 保存授权码
 
             params = [('code', code)]
             if state:

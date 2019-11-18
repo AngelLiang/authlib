@@ -27,6 +27,10 @@ class OAuth2Token(dict):
 
 class OAuth2Request(object):
     def __init__(self, method, uri, body=None, headers=None):
+        """
+        :param method: 请求方法
+        :param uri:
+        """
         InsecureTransportError.check(uri)
         #: HTTP method
         self.method = method
@@ -68,22 +72,27 @@ class OAuth2Request(object):
 
     @property
     def response_type(self):
+        """获取请求参数中的 grant_type"""
         return self.data.get('response_type')
 
     @property
     def grant_type(self):
+        """获取请求参数中的 grant_type"""
         return self.data.get('grant_type')
 
     @property
     def redirect_uri(self):
+        """获取请求参数中的 redirect_uri"""
         return self.data.get('redirect_uri')
 
     @property
     def scope(self):
+        """获取请求参数中的 scope"""
         return self.data.get('scope')
 
     @property
     def state(self):
+        """获取请求参数中的 state"""
         return self.data.get('state')
 
 
