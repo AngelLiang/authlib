@@ -21,8 +21,8 @@ class AuthorizationServer(object):
 
         self.metadata = metadata
         self._client_auth = None
-        self._authorization_grants = []
-        self._token_grants = []
+        self._authorization_grants = []  # tuple: (grant_cls, extensions)
+        self._token_grants = []  # tuple: (grant_cls, extensions)
         self._endpoints = {}
 
     def authenticate_client(self, request, methods):
@@ -226,6 +226,13 @@ class AuthorizationServer(object):
 
 
 def _create_grant(grant_cls, extensions, request, server):
+    """辅助函数
+
+    :param grant_cls:
+    :param extensions:
+    :param request:
+    :param server:
+    """
     grant = grant_cls(request, server)
     if extensions:
         for ext in extensions:

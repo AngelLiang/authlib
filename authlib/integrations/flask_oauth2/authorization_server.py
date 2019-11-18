@@ -107,12 +107,15 @@ class AuthorizationServer(_AuthorizationServer):
             return dict(error_uris)
 
     def create_oauth2_request(self, request):
+        """必须实现的接口"""
         return create_oauth_request(request, OAuth2Request)
 
     def create_json_request(self, request):
+        """必须实现的接口"""
         return create_oauth_request(request, HttpRequest, True)
 
     def handle_response(self, status_code, payload, headers):
+        """必须实现的接口"""
         if isinstance(payload, dict):
             payload = json.dumps(payload)
         return Response(payload, status=status_code, headers=headers)
