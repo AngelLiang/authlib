@@ -96,6 +96,7 @@ class ResourceOwnerPasswordCredentialsGrant(BaseGrant, TokenEndpointMixin):
             raise InvalidRequestError('Missing "password" in request.')
 
         log.debug('Authenticate user of %r', params['username'])
+        # 帐号认证
         user = self.authenticate_user(
             params['username'],
             params['password']
