@@ -87,13 +87,18 @@ class BearerTokenValidator(object):
     def __call__(self, token_string, scope, request, scope_operator='AND'):
         if self.request_invalid(request):
             raise InvalidRequestError()
+        # 验证token
         token = self.authenticate_token(token_string)
+        # 没有token
         if not token:
             raise InvalidTokenError(realm=self.realm)
+        # token过期
         if self.token_expired(token):
             raise InvalidTokenError(realm=self.realm)
+        # token撤销
         if self.token_revoked(token):
             raise InvalidTokenError(realm=self.realm)
+        # 判断作用域
         if self.scope_insufficient(token, scope, scope_operator):
             raise InsufficientScopeError()
         return token

@@ -65,6 +65,8 @@ class ImplicitGrant(BaseGrant, AuthorizationEndpointMixin):
         |  Client |
         |         |
         +---------+
+
+
     """
     #: authorization_code grant type has authorization endpoint
     AUTHORIZATION_ENDPOINT = True
