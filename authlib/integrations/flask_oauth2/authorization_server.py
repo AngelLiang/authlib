@@ -149,6 +149,7 @@ class AuthorizationServer(_AuthorizationServer):
         ``OAUTH2_REFRESH_TOKEN_GENERATOR=True``.
 
         创建 bearer_token 生成器
+        需要设置 config.OAUTH2_REFRESH_TOKEN_GENERATOR 为 True
         """
         conf = config.get('OAUTH2_ACCESS_TOKEN_GENERATOR', True)
         access_token_generator = create_token_generator(conf, 42)
@@ -182,8 +183,8 @@ class AuthorizationServer(_AuthorizationServer):
                         error=error
                     )
         """
-        req = self.create_oauth2_request(request)
-        req.user = end_user
+        req = self.create_oauth2_request(request)  # 创建 authlib.oauth2.OAuth2Request
+        req.user = end_user  # 设置 request 的 user
 
         grant = self.get_authorization_grant(req)
         grant.validate_consent_request()
