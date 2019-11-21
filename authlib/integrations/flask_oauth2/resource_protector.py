@@ -48,6 +48,9 @@ class ResourceProtector(_ResourceProtector):
             user = User.query.get(current_token.user_id)
             return jsonify(user.to_dict())
 
+
+        flask oauth2 资源保护器，需要注册 Validator 才能使用
+
     """
     def raise_error_response(self, error):
         """Raise HTTPException for OAuth2Error. Developers can re-implement
@@ -68,6 +71,7 @@ class ResourceProtector(_ResourceProtector):
         :param operator: value of "AND" or "OR"
         :return: token object
         """
+        # authlib.oauth2.rfc6749.HttpRequest
         request = HttpRequest(
             _req.method,
             _req.full_path,
@@ -76,8 +80,9 @@ class ResourceProtector(_ResourceProtector):
         )
         if not callable(operator):
             operator = operator.upper()
+        # parent
         token = self.validate_request(scope, request, operator)
-        token_authenticated.send(self, token=token)
+        token_authenticated.send(self, token=token)  # send signals
         ctx = _app_ctx_stack.top
         ctx.authlib_server_oauth2_token = token
         return token
@@ -99,6 +104,12 @@ class ResourceProtector(_ResourceProtector):
             self.raise_error_response(error)
 
     def __call__(self, scope=None, operator='AND', optional=False):
+        """装饰器
+
+        :param scope: 权限域
+        :param operator: str or callable, 操作
+        :param optional: bool, 是否可选
+        """
         def wrapper(f):
             @functools.wraps(f)
             def decorated(*args, **kwargs):

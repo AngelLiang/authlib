@@ -11,6 +11,8 @@ class RevocationEndpoint(TokenEndpoint):
     `RFC7009`_.
 
     .. _RFC7009: https://tools.ietf.org/html/rfc7009
+
+    撤销token端点
     """
     #: Endpoint name to be registered
     ENDPOINT_NAME = 'revocation'

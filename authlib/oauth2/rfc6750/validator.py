@@ -67,6 +67,13 @@ class BearerTokenValidator(object):
         return expires_at < time.time()
 
     def scope_insufficient(self, token, scope, operator='AND'):
+        """
+        :param token: obj
+        :param scope: str
+        :param operator: 'AND' or 'OR' or callable(token_scopes, resource_scopes)
+
+        :return: bool
+        """
         if not scope:
             return False
 
@@ -85,6 +92,14 @@ class BearerTokenValidator(object):
         raise ValueError('Invalid operator value')
 
     def __call__(self, token_string, scope, request, scope_operator='AND'):
+        """
+        :param token_string:
+        :param scope:
+        :param request:
+        :param scope_operator:
+
+        :return: token object
+        """
         if self.request_invalid(request):
             raise InvalidRequestError()
         # 验证token
@@ -98,7 +113,7 @@ class BearerTokenValidator(object):
         # token撤销
         if self.token_revoked(token):
             raise InvalidTokenError(realm=self.realm)
-        # 判断作用域
+        # 判断scope
         if self.scope_insufficient(token, scope, scope_operator):
             raise InsufficientScopeError()
         return token
