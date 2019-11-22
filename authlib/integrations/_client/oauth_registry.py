@@ -63,6 +63,7 @@ class OAuth(object):
         if name in self._clients:
             return self._clients[name]
 
+        # 没注册则返回 None
         if name not in self._registry:
             return None
 
@@ -74,6 +75,7 @@ class OAuth(object):
         else:
             kwargs = config
         kwargs = self.generate_client_kwargs(name, overwrite, **kwargs)
+        # create client
         client = client_cls(name, **kwargs)
         self._clients[name] = client
         return client

@@ -98,6 +98,8 @@ class RemoteApp(_RemoteApp, UserInfoMixin):
         :param redirect_uri: Callback or redirect URI for authorization.
         :param kwargs: Extra parameters to include.
         :return: A HTTP redirect response.
+
+        创建一个 HTTP 重定向到认证端点
         """
         rv = self.create_authorization_url(redirect_uri, **kwargs)
 
@@ -105,7 +107,7 @@ class RemoteApp(_RemoteApp, UserInfoMixin):
             request_token = rv.pop('request_token', None)
             self._save_request_token(request_token)
 
-        self.save_authorize_state(redirect_uri, **rv)
+        self.save_authorize_state(redirect_uri, **rv)  # 保存认证状态
         return redirect(rv['url'])
 
     def authorize_access_token(self, **kwargs):
