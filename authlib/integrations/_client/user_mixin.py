@@ -3,6 +3,8 @@ from authlib.oidc.core import UserInfo, CodeIDToken, ImplicitIDToken
 
 
 class UserInfoMixin(object):
+    """用户信息混入类"""
+
     def userinfo(self, **kwargs):
         """Fetch user info from ``userinfo_endpoint``."""
         metadata = self._load_server_metadata()

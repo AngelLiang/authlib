@@ -107,6 +107,7 @@ class RemoteApp(BaseApp):
             return token
 
     def request(self, method, url, token=None, **kwargs):
+        """请求方法"""
         if self.api_base_url and not url.startswith(('https://', 'http://')):
             url = urlparse.urljoin(self.api_base_url, url)
 

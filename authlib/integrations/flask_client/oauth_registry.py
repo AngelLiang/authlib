@@ -86,6 +86,8 @@ class OAuth(_OAuth):
 
 
 def _add_cache_request_token(cache, name, kwargs):
+    """添加 request token 到 cache
+    """
     if not kwargs.get('fetch_request_token'):
         def fetch_request_token():
             key = _req_token_tpl.format(name)
@@ -111,6 +113,8 @@ def _add_cache_request_token(cache, name, kwargs):
 
 
 def _add_session_request_token(name, kwargs):
+    """添加 request token 到 flask.session
+    """
     if not kwargs.get('fetch_request_token'):
         def fetch_request_token():
             key = _req_token_tpl.format(name)

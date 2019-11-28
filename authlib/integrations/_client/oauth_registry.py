@@ -3,6 +3,7 @@ import functools
 __all__ = ['OAuth']
 
 
+# 参数 key
 OAUTH_CLIENT_PARAMS = (
     'client_id', 'client_secret',
     'request_token_url', 'request_token_params',
