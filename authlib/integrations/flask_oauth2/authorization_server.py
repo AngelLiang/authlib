@@ -115,7 +115,10 @@ class AuthorizationServer(_AuthorizationServer):
         return create_oauth_request(request, HttpRequest, True)
 
     def handle_response(self, status_code, payload, headers):
-        """必须实现的接口"""
+        """必须实现的接口
+
+        :return: flask.Response
+        """
         if isinstance(payload, dict):
             payload = json.dumps(payload)
         return Response(payload, status=status_code, headers=headers)
@@ -149,7 +152,8 @@ class AuthorizationServer(_AuthorizationServer):
         ``OAUTH2_REFRESH_TOKEN_GENERATOR=True``.
 
         创建 bearer_token 生成器
-        需要设置 config.OAUTH2_REFRESH_TOKEN_GENERATOR 为 True
+        config.OAUTH2_ACCESS_TOKEN_GENERATOR 默认为 True
+        启用 refresh token： config.OAUTH2_REFRESH_TOKEN_GENERATOR = True
         """
         conf = config.get('OAUTH2_ACCESS_TOKEN_GENERATOR', True)
         access_token_generator = create_token_generator(conf, 42)

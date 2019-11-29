@@ -15,6 +15,7 @@ from .errors import (
 
 
 class BearerTokenValidator(object):
+    """callable"""
     TOKEN_TYPE = 'bearer'
 
     def __init__(self, realm=None):
@@ -67,7 +68,8 @@ class BearerTokenValidator(object):
         return expires_at < time.time()
 
     def scope_insufficient(self, token, scope, operator='AND'):
-        """
+        """判断 scope 权限域
+
         :param token: obj
         :param scope: str
         :param operator: 'AND' or 'OR' or callable(token_scopes, resource_scopes)
