@@ -25,7 +25,9 @@ class ClientCredentialsGrant(BaseGrant, TokenEndpointMixin):
 
     https://tools.ietf.org/html/rfc6749#section-4.4
 
-    客户端证书
+
+
+    客户端凭证模式
     """
     GRANT_TYPE = 'client_credentials'
 

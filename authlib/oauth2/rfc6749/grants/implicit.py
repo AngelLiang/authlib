@@ -67,6 +67,7 @@ class ImplicitGrant(BaseGrant, AuthorizationEndpointMixin):
         +---------+
 
 
+    隐式授权模式
     """
     #: authorization_code grant type has authorization endpoint
     AUTHORIZATION_ENDPOINT = True

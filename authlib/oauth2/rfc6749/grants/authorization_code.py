@@ -47,6 +47,10 @@ class AuthorizationCodeGrant(BaseGrant, AuthorizationEndpointMixin, TokenEndpoin
         |         |<---(E)----- Access Token -------------------'
         +---------+       (w/ Optional Refresh Token)
 
+
+
+    授权码模式
+
     因为这个是基于重定向流，客户端必须能够与资源拥有者的用户代理进行交互（典型的
     是web浏览器）并接收来自于认证服务器的重定向的请求（通过redirection）
     """

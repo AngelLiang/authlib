@@ -42,7 +42,9 @@ class ResourceOwnerPasswordCredentialsGrant(BaseGrant, TokenEndpointMixin):
         |         |    (w/ Optional Refresh Token)   |               |
         +---------+                                  +---------------+
 
-    资源拥有者的密码
+
+
+    资源所有者密码凭证模式
     """
     GRANT_TYPE = 'password'
 
