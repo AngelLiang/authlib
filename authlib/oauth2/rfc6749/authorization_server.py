@@ -21,8 +21,8 @@ class AuthorizationServer(object):
 
         self.metadata = metadata
         self._client_auth = None
-        self._authorization_grants = []  # tuple: (grant_cls, extensions)
-        self._token_grants = []  # tuple: (grant_cls, extensions)
+        self._authorization_grants = []  # [(grant_cls, extensions), ...]
+        self._token_grants = []  # [(grant_cls, extensions), ...]
         self._endpoints = {}
 
     def authenticate_client(self, request, methods):
@@ -131,6 +131,9 @@ class AuthorizationServer(object):
 
         :param grant_cls: a grant class.
         :param extensions: extensions for the grant class.
+
+
+        注册 grant class
         """
         # 注册 authorization grant
         if hasattr(grant_cls, 'check_authorization_endpoint'):
@@ -158,8 +161,11 @@ class AuthorizationServer(object):
         :param request: OAuth2Request instance.
         :return: grant instance
 
+
         对当前 request 寻找 authorization grant
         只有注册了 grant 才能找到
+
+        request: oauth2.rfc6749.wrappers:OAuth2Request
         """
         for (grant_cls, extensions) in self._authorization_grants:
             if grant_cls.check_authorization_endpoint(request):
@@ -190,10 +196,13 @@ class AuthorizationServer(object):
         :param request: HTTP request instance.
         :return: Response
         """
+        # 检查 endpoint 是否已经注册
         if name not in self._endpoints:
             raise RuntimeError('There is no "{}" endpoint.'.format(name))
 
+        # 匹配 endpoint
         endpoint = self._endpoints[name]
+
         request = endpoint.create_endpoint_request(request)
         try:
             return self.handle_response(*endpoint(request))
@@ -209,6 +218,7 @@ class AuthorizationServer(object):
         :returns: Response
         """
         request = self.create_oauth2_request(request)
+        # return request: oauth2.rfc6749.wrappers:OAuth2Request
         try:
             grant = self.get_authorization_grant(request)
         except InvalidGrantError as error:
@@ -249,10 +259,10 @@ class AuthorizationServer(object):
 
 
 def _create_grant(grant_cls, extensions, request, server):
-    """辅助函数
+    """创建grant，辅助函数
 
     :param grant_cls:
-    :param extensions:
+    :param extensions: iter, 
     :param request:
     :param server:
     """

@@ -3,6 +3,7 @@ from ..errors import InvalidRequestError
 
 
 class BaseGrant(object):
+    """Grant基类"""
     #: Allowed client auth methods for token endpoint
     TOKEN_ENDPOINT_AUTH_METHODS = ['client_secret_basic']
 
@@ -16,6 +17,10 @@ class BaseGrant(object):
     TOKEN_RESPONSE_HEADER = default_json_headers
 
     def __init__(self, request, server):
+        """
+        :param request: oauth2.rfc6749.wrappers:OAuth2Request
+        :param server: oauth2.rfc6749.authorization_server:AuthorizationServer
+        """
         self.request = request
         self.server = server
         self._hooks = {
@@ -31,6 +36,7 @@ class BaseGrant(object):
 
     def generate_token(self, client, grant_type, user=None, scope=None,
                        expires_in=None, include_refresh_token=True):
+        """生成toekn"""
         return self.server.generate_token(
             client, grant_type,
             user=user,
@@ -79,12 +85,26 @@ class BaseGrant(object):
         return self.server.validate_requested_scope(scope, state)
 
     def register_hook(self, hook_type, hook):
+        """注册钩子函数
+
+        :param hook_type: str, 钩子类型。包括
+            after_validate_authorization_request
+            after_validate_consent_request
+            after_validate_token_request
+            process_token
+        :param hook: callable(grant, *args, **kwarg)
+        """
+        # self._hooks: {'{hook_type}': set()}
         if hook_type not in self._hooks:
             raise ValueError('Hook type %s is not in %s.',
                              hook_type, self._hooks)
         self._hooks[hook_type].add(hook)
 
     def execute_hook(self, hook_type, *args, **kwargs):
+        """执行钩子函数
+
+        :param hook_type:
+        """
         for hook in self._hooks[hook_type]:
             hook(self, *args, **kwargs)
 

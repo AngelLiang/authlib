@@ -34,6 +34,11 @@ class ClientAuthentication(object):
         }
 
     def register(self, method, func):
+        """
+        :param method: str
+            'none', 'client_secret_basic', 'client_secret_post'
+        :param func: callable
+        """
         self._methods[method] = func
 
     def authenticate(self, request, methods):

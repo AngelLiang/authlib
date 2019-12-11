@@ -15,6 +15,12 @@ class TokenEndpoint(object):
         return self.create_endpoint_response(request)
 
     def create_endpoint_request(self, request):
+        """创建端点请求
+
+        :param request:
+
+        :return: oauth2.rfc6749.wrappers:OAuth2Request
+        """
         return self.server.create_oauth2_request(request)
 
     def authenticate_endpoint_client(self, request):
