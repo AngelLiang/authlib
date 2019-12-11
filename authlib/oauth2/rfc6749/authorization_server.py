@@ -178,6 +178,7 @@ class AuthorizationServer(object):
         :param request: OAuth2Request instance.
         :return: grant instance
 
+
         对当前 request 寻找 token grant
         """
         for (grant_cls, extensions) in self._token_grants:
@@ -203,6 +204,7 @@ class AuthorizationServer(object):
         # 匹配 endpoint
         endpoint = self._endpoints[name]
 
+        # 创建 request
         request = endpoint.create_endpoint_request(request)
         try:
             return self.handle_response(*endpoint(request))
